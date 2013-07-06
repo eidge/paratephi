@@ -1,0 +1,320 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Tephigram Finder</title>
+    <link rel="shortcut icon" href="icon.png">
+    <style>
+      body {
+        overflow-x: auto;
+        padding: 10px;
+        font-family: Helvetica, Ubuntu, Arial, sans-serif;
+        background: #ffffdf;
+      }
+
+      #title *{
+        font-size: 50px;
+        margin: 0 100px;
+        color: white;
+        -webkit-text-stroke: 2px black;
+        text-shadow: 5px 5px 12px rgba(0, 0, 0, 1);
+      }
+
+      #title:hover * {
+        color: #ddf;
+        text-shadow: 5px 5px 10px rgba(0, 0, 0, 1);
+      }
+
+      #list4{
+        position: absolute;
+        right: 0;
+        top: 100px;
+      }
+
+      ul {
+          list-style: none;
+          display: block;
+          width: 200px;
+          position: relative;
+          -webkit-background-size: 50% 100%;
+          padding-left: 0px;
+      }
+
+      ul li {
+        margin-bottom: 5px;
+        -webkit-transition: all 0.3s ease-out;
+        background: #cbcbcb;
+        color: #174867;
+        padding: 7px 15px 7px 15px;
+        -webkit-border-top-left-radius: 10px;
+        -webkit-border-bottom-left-radius: 10px;
+        width: 200px;
+        display: block;
+        text-decoration: none;
+        -webkit-box-shadow: 2px 2px 4px #888;
+        cursor: hand; cursor: pointer;
+      }
+
+      ul li.NewPlace {
+        background-color: rgb(34, 188, 236);
+        width: 80px;
+        margin-left: 90px;
+      }
+
+      ul li:hover {
+        background: #ebebeb;
+        color: #67a5cd;
+        padding: 7px 15px 7px 30px;
+      }
+
+      #footer{
+        position: absolute;
+        bottom: 0px;
+        text-align: center;
+        width: 95%;
+      }
+
+      #footer em{
+        font-size: 0.7em;
+        font-weight: 200;
+        text-align: center;
+      }
+
+      #map-canvas{
+        z-index: -1;
+        top: 0;
+        left: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+
+      #overlay{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.7);
+
+        top: 0px;
+        left: 0px;
+
+        z-index: 1000;
+      }
+
+      #box{
+        position: relative;
+        top: 175px;
+        width: 300px;
+        height: 150px;
+        background-color: white;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      #content{
+        width: 85%;
+        min-width: 1120px;
+        max-height: 500px;
+        overflow: scroll;
+        margin: 25px auto;
+        background-color: rgba(255,255,255,.7);
+        overflow: auto;
+      }
+
+      #tephi{
+        border:#ccc 1px solid;
+
+        -moz-border-radius:3px;
+        -webkit-border-radius:3px;
+        border-radius:3px;
+
+        -moz-box-shadow: 0 1px 2px #d1d1d1;
+        -webkit-box-shadow: 0 1px 2px #d1d1d1;
+        box-shadow: 0 1px 2px #d1d1d1;
+        margin: 10px;
+        float: left;
+        height: 480px;
+        cursor: -webkit-zoom-in;
+      }
+
+      .tephi-text{
+        float: left;
+        font-size: 12px;
+        margin-left: 20px;
+      }
+
+      .tephi-text p{
+        font-size: 12px;
+      }
+
+      body a{
+        color: #000;
+        font-weight: bold;
+        text-decoration: none;
+      }
+
+      .rmPlace{
+        float:right;
+        margin-right: 10px;
+        margin-top: -35px;
+        cursor: hand; cursor: pointer;
+      }
+
+      .rmPlace:hover{
+        color: #f22;
+      }
+
+      table a:link {
+        color: #666;
+        font-weight: bold;
+        text-decoration:none;
+      }
+      table a:visited {
+        color: #999999;
+        font-weight:bold;
+        text-decoration:none;
+      }
+      table a:active,
+      table a:hover {
+        color: #bd5a35;
+        text-decoration:underline;
+      }
+      table {
+        font-family:Arial, Helvetica, sans-serif;
+        color:#666;
+        font-size:12px;
+        text-shadow: 1px 1px 0px #fff;
+        background:#eaebec;
+        margin:20px 0;
+        border:#ccc 1px solid;
+
+        -moz-border-radius:3px;
+        -webkit-border-radius:3px;
+        border-radius:3px;
+
+        -moz-box-shadow: 0 1px 2px #d1d1d1;
+        -webkit-box-shadow: 0 1px 2px #d1d1d1;
+        box-shadow: 0 1px 2px #d1d1d1;
+      }
+      table th {
+        padding:12px 15px 13px 15px;
+        border-top:1px solid #fafafa;
+        border-bottom:1px solid #e0e0e0;
+
+        background: #ededed;
+        background: -webkit-gradient(linear, left top, left bottom, from(#ededed), to(#ebebeb));
+        background: -moz-linear-gradient(top,  #ededed,  #ebebeb);
+      }
+      table th:first-child {
+        text-align: left;
+        padding-left:20px;
+      }
+      table tr:first-child th:first-child {
+        -moz-border-radius-topleft:3px;
+        -webkit-border-top-left-radius:3px;
+        border-top-left-radius:3px;
+      }
+      table tr:first-child th:last-child {
+        -moz-border-radius-topright:3px;
+        -webkit-border-top-right-radius:3px;
+        border-top-right-radius:3px;
+      }
+      table tr {
+        text-align: center;
+        padding-left:20px;
+      }
+      table td:first-child {
+        text-align: left;
+        padding-left:20px;
+        border-left: 0;
+      }
+      table td {
+        padding: 2px 10px;
+        border-top: 1px solid #ffffff;
+        border-bottom:1px solid #e0e0e0;
+        border-left: 1px solid #e0e0e0;
+
+        background: #fafafa;
+        background: -webkit-gradient(linear, left top, left bottom, from(#fbfbfb), to(#fafafa));
+        background: -moz-linear-gradient(top,  #fbfbfb,  #fafafa);
+      }
+      table tr.even td {
+        background: #f6f6f6;
+        background: -webkit-gradient(linear, left top, left bottom, from(#f8f8f8), to(#f6f6f6));
+        background: -moz-linear-gradient(top,  #f8f8f8,  #f6f6f6);
+      }
+      table tr:last-child td {
+        border-bottom:0;
+      }
+      table tr:last-child td:first-child {
+        -moz-border-radius-bottomleft:3px;
+        -webkit-border-bottom-left-radius:3px;
+        border-bottom-left-radius:3px;
+      }
+      table tr:last-child td:last-child {
+        -moz-border-radius-bottomright:3px;
+        -webkit-border-bottom-right-radius:3px;
+        border-bottom-right-radius:3px;
+      }
+      table tr:hover td {
+        background: #f2f2f2;
+        background: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#f0f0f0));
+        background: -moz-linear-gradient(top,  #f2f2f2,  #f0f0f0);  
+      }
+
+      .tableGrid{
+        margin: 0;
+      }
+
+      #text2 tr:first-child, #text1 td:first-child{
+        color: black;
+        font-weight: bolder;
+      }
+
+      #text2 tr:nth-child(2){
+        color: black;
+        font-weight: bold;
+      }
+
+      #sub_place{
+        margin: 0;
+      }
+    </style>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script type="text/javascript" src="jquery-2.0.2.min.js"></script>
+    <script src="gmaps.js"></script>
+    <script src="popup.js"></script>
+    <script src="helpers.js"></script>
+    <script src="get_tephi.js"></script>
+  </head>
+  <body>
+    <h1 id="title" style="display: inline;"><a href="/main.html">Tephigram Finder <span id = "sub_place"></span></a></h1>
+
+    <div id="overlay" style="display:none">
+        <div id="box">
+          <h3>New Place</h3>
+          <input type="text" id="name" placeholder="Name"><br>
+          <input type="text" id="lat" placeholder="Latitude"><br>
+          <input type="text" id="lon" placeholder="Longitude"><br>
+          <button id="save">Save</button>
+          <button id="get">Get Tephi</button>
+          <button id="close">Close</button>
+        </div>  
+    </div>
+
+    <div id="map-canvas"></div>
+    <div id="content">
+      
+
+      <div id="list4">
+        <ul>
+          <li class="NewPlace">New place</li>
+        </ul>
+      </div>
+    </div>
+
+    <div id="footer"><em>by Hugo Ribeira, Portugal 2013 If you liked this, please consider a <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=hugo_ribeira%40hotmail%2ecom&lc=EN&item_name=Hugo%20Ribeira&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted" target="_blank" style = "color: blue;">donation</a></em>
+</div>
+  </body>
+</html>
+
