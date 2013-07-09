@@ -42,6 +42,12 @@ document.addEventListener('DOMContentLoaded', function() {
     chrome.storage.sync.get("data", function(data){
       var cache = data.data;
 
+      if(data.data.version != chrome.app.getDetails().version){
+        make_notification(update_title, update_text);
+        data.data.version = chrome.app.getDetails().version;
+        chrome.storage.sync.set({data: data.data}, function(){;})
+      }
+
       //Create each place entry
       if(!$.isEmptyObject(cache))
         $(cache.places).each(function(index){

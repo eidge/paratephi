@@ -153,6 +153,5 @@ function get_tephi(lat,lon){
 		$($("form").children()[15]).children().children().css("display", "none");
     $($($("form").children()[15]).children().children()[0]).css("display", "block");
     $($("table")[1]).css("display", "none");
-    
 	}
 }
