@@ -61,6 +61,7 @@ function get_tephi(lat,lon){
     //Prevent the form from submiting
     e.preventDefault();
 
+    form_bckup.html("");
     form_bckup.append($(this).clone());
     form_data = $(this).serialize();
     new_path  = this.action;
@@ -131,13 +132,27 @@ function get_tephi(lat,lon){
 
 		
 
-		$("<a>", {href: "www.google.pt", id: "zoom", rel: url + tephi_path}).appendTo("#content");
+		$("<a>", {href: "#", id: "zoom", rel: url + tephi_path}).appendTo("#content");
 
 		$("<img>", {
 	    id: 'tephi',
 	    src: url + tephi_path,
 		}).appendTo("#zoom")
 
-		
+		//Display form
+		$(form_bckup.children()).prependTo("#content").submit(form_callback);
+		$($("form").children()[15]).children().children().css("display", "none");
+    $($($("form").children()[15]).children().children()[0]).css("display", "block");
+    $($($($("form").children()[15]).children().children()[0]).children()[0]).text("Tephigram Time");
+    $($("table")[1]).css("display", "none");
+    $($("select")[0]).change(function(){$("form").submit();});
+	}
+
+	function display_date_from_form(form){
+		$(form).prependTo("#content");
+		$($("form").children()[15]).children().children().css("display", "none");
+    $($($("form").children()[15]).children().children()[0]).css("display", "block");
+    $($("table")[1]).css("display", "none");
+    
 	}
 }
