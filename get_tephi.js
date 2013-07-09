@@ -51,7 +51,13 @@ function get_tephi(lat,lon){
   $("form").attr("action", "http://ready.arl.noaa.gov" + $("form").attr("action"));
 
 
-  $("form").submit(function(e) {
+  $("form").submit(form_callback);
+
+  //---------------------------------------------------------//
+  //----------------- Function Definitions ------------------//
+  //---------------------------------------------------------//
+
+  function form_callback(e) {
     //Prevent the form from submiting
     e.preventDefault();
 
@@ -65,11 +71,14 @@ function get_tephi(lat,lon){
 	    data: form_data,
 	    success: function(data){
 	      form = data;
+	      get_tephi_data(form);
 	    },
 	    async: false
-	  });
+	  });    
+	}
 
-    $("#content").html("");
+	function get_tephi_data(form_data){
+		$("#content").html("");
 	  var tephi_path = $($("img",form)[4]).attr("src");
 	  var text_path  = $($("a",form)[10]).attr("href");
 
@@ -128,5 +137,7 @@ function get_tephi(lat,lon){
 	    id: 'tephi',
 	    src: url + tephi_path,
 		}).appendTo("#zoom")
-	});
+
+		
+	}
 }
