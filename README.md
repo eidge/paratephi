@@ -1,6 +1,14 @@
 Tephigram Finder
 =========
 
+##NOTICE
+
+This app has some bad bad code, it was mainly an experiment with Chrome apps development.
+
+Also the development has come to an halt as I dived deeper into other projects, feel free to fork and continue my work. (I suggest starting by cleaning up the code!)
+
+=========
+
 A Tephigram Finder app for Google Chrome.
 
 Let's you access tephigrams from www.noaa.gov without the need to memorize coordinates and go through multiple menus.
