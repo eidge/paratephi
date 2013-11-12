@@ -89,7 +89,8 @@ function get_tephi(lat,lon){
 			type: "GET",
 			url: url + text_path,
 			success: function(data){
-				lines = data.split("\n");
+				lines 		= data.split("\n");
+				var grad	= calc_gradient(lines);
 
 				$("<table>", {id: "text1", class: "tephi-text"}).appendTo("#content");
 				for(var i = 5; i < 23; ++i){
@@ -126,6 +127,17 @@ function get_tephi(lat,lon){
 					row.append("<td>"+text[5]);
 					row.append("<td>"+text[6]);
 				}
+
+				//Append Gradient
+				$($("table#text2 tr")[0].children[3]).after("<td>T GRAD</td>");
+				$($("table#text2 tr")[1].children[3]).after("<td>C/100M</td>");
+				$($("table#text2 tr")[2].children[3]).after("<td>---</td>");
+
+				for(var i = 3; i < grad.length; ++i){
+					$($("table#text2 tr")[i].children[3]).after("<td>" + grad[i-3].toFixed(2) +"</td>");
+				}
+
+
 			},
 			async: true
 		});
@@ -146,12 +158,5 @@ function get_tephi(lat,lon){
     $($($($("form").children()[15]).children().children()[0]).children()[0]).text("Tephigram Time");
     $($("table")[1]).css("display", "none");
     $($("select")[0]).change(function(){$("form").submit();});
-	}
-
-	function display_date_from_form(form){
-		$(form).prependTo("#content");
-		$($("form").children()[15]).children().children().css("display", "none");
-    $($($("form").children()[15]).children().children()[0]).css("display", "block");
-    $($("table")[1]).css("display", "none");
 	}
 }

@@ -41,7 +41,8 @@ google.maps.event.addDomListener(window, 'load', initialize);
 document.addEventListener('DOMContentLoaded', function() {
     chrome.storage.sync.get("data", function(data){
       var cache = data.data;
-
+      $("#map-canvas").css("display","fixed");
+      
       if(data.data.version != chrome.app.getDetails().version){
         make_notification(update_title, update_text);
         data.data.version = chrome.app.getDetails().version;

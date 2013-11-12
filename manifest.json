@@ -3,7 +3,7 @@
 
   "name": "Tephigram Finder",
   "description": "This extensions provides easy and quick access to tephigrams.",
-  "version": "0.5.8",
+  "version": "0.6.0",
 
   "permissions": [
      "tabs", "http://ready.arl.noaa.gov/*", "storage", "notifications"
